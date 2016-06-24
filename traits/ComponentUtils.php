@@ -38,8 +38,9 @@ trait ComponentUtils
         $this->attribute = $attribute;
 
         if ($this->model) {
-            $relationType = $this->model->getRelationType($attribute);
-            $this->isMulti = ($relationType == 'attachMany' || $relationType == 'morphMany');
+            //$relationType = $this->model->getRelationType($attribute);
+            //$this->isMulti = ($relationType == 'attachMany' || $relationType == 'morphMany');
+            $this->isMulti = true;
             $this->isBound = true;
         }
     }

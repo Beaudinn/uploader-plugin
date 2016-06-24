@@ -1,6 +1,8 @@
 <?php namespace Responsiv\Uploader\Components;
 
+
 use Input;
+use BasketCart;
 use Cms\Classes\ComponentBase;
 use System\Models\File;
 use System\Classes\CombineAssets;
@@ -90,16 +92,34 @@ class FileUploader extends ComponentBase
         $this->addJs('assets/vendor/dropzone/dropzone.js');
         $this->addJs('assets/js/uploader.js');
 
+        /*if ($result = $this->checkUploadAction()) {
+            return $result;
+        }
+
+        $this->fileList = $fileList = $this->getFileList();
+        $this->singleFile = $fileList->first();*/
+    }
+
+    public function onRender()
+    {
+        if($this->property('id')) {
+
+            $this->model = $this->model->where('basket_id', $this->property('id'))->first();
+
+            $item = BasketCart::get($this->property('id'));
+
+            if (!$item) {
+                return;
+            }
+        }
+
         if ($result = $this->checkUploadAction()) {
             return $result;
         }
 
         $this->fileList = $fileList = $this->getFileList();
         $this->singleFile = $fileList->first();
-    }
 
-    public function onRender()
-    {
         if (!$this->isBound) {
             throw new ApplicationException('There is no model bound to the uploader!');
         }
